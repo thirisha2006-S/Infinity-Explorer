@@ -1,0 +1,1382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌟 God World - Infinity Explorer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Quicksand:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --gold: #FFD700;
+            --gold-light: #FFF59D;
+            --gold-dark: #FFA000;
+            --amber: #FFB300;
+            --brown: #5D4037;
+            --cream: #FFF8E1;
+            --sage: #A5D6A7;
+            --sky: #90CAF9;
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            overflow-x: hidden;
+            transition: all 0.5s ease;
+            background: var(--cream);
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .two-column { flex-direction: column !important; }
+            .divider { display: none !important; }
+            .options-grid { grid-template-columns: 1fr 1fr !important; }
+            .exit-stats { grid-template-columns: 1fr 1fr !important; }
+            .header { padding: 10px !important; flex-wrap: wrap; }
+            .header-title { font-size: 18px !important; }
+            .content { padding: 15px !important; }
+            .message { font-size: 18px !important; }
+            .btn { padding: 12px 20px !important; font-size: 14px !important; }
+        }
+
+        /* Screen containers */
+        .screen {
+            display: none;
+            width: 100vw;
+            min-height: 100vh;
+            position: absolute;
+            top: 0;
+            left: 0;
+            transition: opacity 0.5s ease;
+            padding-bottom: 40px;
+        }
+
+        .screen.active {
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Screen backgrounds */
+        #screen-entry { background: linear-gradient(180deg, #FFF9E6 0%, #FFF3CD 50%, #FFE69B 100%); }
+        #screen-presence { background: linear-gradient(180deg, #FFF3CD 0%, #FFE69B 50%, #FFD54F 100%); }
+        #screen-wisdom { background: linear-gradient(135deg, #FFF9E6 0%, #FFF3CD 50%, #FFE69B 100%); }
+        #screen-karma { background: linear-gradient(180deg, #FFF9E6 0%, #FFF3CD 50%, #FFE69B 100%); }
+        #screen-meditation { background: linear-gradient(180deg, #E8F5E9 0%, #C8E6C9 50%, #A5D6A7 100%); }
+        #screen-story { background: linear-gradient(180deg, #E3F2FD 0%, #BBDEFB 50%, #90CAF9 100%); }
+        #screen-exit { background: linear-gradient(180deg, #FFF9E6 0%, #FFF3CD 50%, #FFE69B 100%); }
+        #screen-character { background: linear-gradient(180deg, #EDE7F6 0%, #D1C4E9 50%, #B39DDB 100%); }
+
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 25px;
+            background: rgba(255,255,255,0.4);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255,193,7,0.3);
+        }
+
+        .header-title {
+            font-family: 'Cinzel', serif;
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--brown);
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 14px 28px;
+            font-size: 16px;
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 600;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--gold) 0%, var(--amber) 100%);
+            color: var(--brown);
+            box-shadow: 0 4px 15px rgba(255,193,7,0.4);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255,193,7,0.5);
+        }
+
+        .btn-secondary {
+            background: rgba(255,255,255,0.6);
+            color: var(--brown);
+            border: 2px solid rgba(255,193,7,0.4);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255,193,7,0.2);
+        }
+
+        .btn-green {
+            background: linear-gradient(135deg, #81C784 0%, #4CAF50 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(76,175,80,0.4);
+        }
+
+        .btn-green:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(76,175,80,0.5);
+        }
+
+        /* XP Badge */
+        .xp-badge {
+            background: rgba(255,255,255,0.6);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--brown);
+        }
+
+        /* Content */
+        .content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 30px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .message {
+            font-size: 24px;
+            font-weight: 500;
+            color: var(--brown);
+            text-align: center;
+            margin-bottom: 20px;
+            font-style: italic;
+        }
+
+        .astra {
+            font-size: 16px;
+            color: #8D6E63;
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        /* Two column layout */
+        .two-column {
+            display: flex;
+            flex: 1;
+            width: 100%;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .column {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 30px;
+        }
+
+        .divider {
+            width: 2px;
+            background: linear-gradient(180deg, transparent, rgba(255,193,7,0.5), transparent);
+        }
+
+        /* Particles */
+        .particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: rgba(255, 193, 7, 0.4);
+            border-radius: 50%;
+            animation: float 8s infinite ease-in-out;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) translateX(0); opacity: 0.3; }
+            50% { transform: translateY(-100px) translateX(50px); opacity: 0.8; }
+        }
+
+        /* Divine Light */
+        .divine-light {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255,255,255,0.9) 0%, rgba(255,193,7,0.4) 50%, rgba(255,193,7,0.8) 100%);
+            box-shadow: 0 0 80px 30px rgba(255,193,7,0.5), 0 0 150px 60px rgba(255,193,7,0.3);
+            animation: pulse 4s infinite ease-in-out;
+            z-index: 1;
+        }
+
+        .divine-light.small {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 20px;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.1); opacity: 0.9; }
+        }
+
+        /* Options Grid */
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-top: 30px;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .option-btn {
+            padding: 20px;
+            background: rgba(255,255,255,0.5);
+            border: 2px solid rgba(255,193,7,0.3);
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .option-btn:hover {
+            background: rgba(255,193,7,0.2);
+            transform: translateY(-3px);
+        }
+
+        .option-icon { font-size: 32px; }
+        .option-label { font-size: 14px; color: #5D4037; font-weight: 500; }
+
+        /* Stats */
+        .stats {
+            display: flex;
+            gap: 30px;
+            margin-top: 30px;
+            padding: 15px;
+            background: rgba(255,255,255,0.4);
+            border-radius: 15px;
+        }
+
+        .stat { text-align: center; }
+        .stat-value { font-size: 24px; font-weight: bold; color: #5D4037; }
+        .stat-label { font-size: 12px; color: #8D6E63; }
+
+        /* Input Box */
+        .input-box {
+            width: 100%;
+            max-width: 400px;
+            padding: 15px 20px;
+            font-size: 16px;
+            border: 2px solid rgba(255,193,7,0.3);
+            border-radius: 10px;
+            background: rgba(255,255,255,0.5);
+            margin: 20px 0;
+            font-family: 'Quicksand', sans-serif;
+        }
+
+        .input-box:focus {
+            outline: none;
+            border-color: rgba(255,193,7,0.6);
+        }
+
+        /* Choice Buttons */
+        .choice-buttons {
+            display: flex;
+            gap: 20px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .choice-btn {
+            padding: 20px 40px;
+            font-size: 18px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 600;
+        }
+
+        .choice-btn.positive { background: rgba(76,175,80,0.3); color: #2E7D32; }
+        .choice-btn.neutral { background: rgba(158,158,158,0.3); color: #616161; }
+        .choice-btn:hover { transform: scale(1.05); }
+
+        /* Breathing Circle */
+        .breathing-circle {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(76,175,80,0.6) 0%, rgba(76,175,80,0.8) 100%);
+            box-shadow: 0 0 50px 20px rgba(76,175,80,0.4);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            animation: breathe 6s infinite ease-in-out;
+        }
+
+        @keyframes breathe {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.3); }
+        }
+
+        .timer { font-size: 36px; color: white; font-weight: 300; }
+        .timer-label { font-size: 14px; color: rgba(255,255,255,0.8); }
+
+        /* Story Box */
+        .story-box {
+            background: rgba(255,255,255,0.4);
+            padding: 30px;
+            border-radius: 20px;
+            border: 2px solid rgba(33,150,243,0.3);
+            margin: 20px 0;
+            text-align: left;
+            max-width: 700px;
+            width: 100%;
+        }
+
+        .story-title { font-size: 22px; color: #1565C0; text-align: center; margin-bottom: 20px; font-family: 'Cinzel', serif; }
+        .story-text { font-size: 18px; line-height: 1.8; color: #4E342E; }
+        .story-question { font-size: 20px; font-weight: 600; color: #5D4037; margin: 25px 0 15px; }
+
+        .story-option {
+            padding: 15px 20px;
+            background: rgba(255,255,255,0.5);
+            border: 2px solid rgba(33,150,243,0.3);
+            border-radius: 12px;
+            margin: 10px 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .story-option:hover { background: rgba(33,150,243,0.1); }
+        .story-option.correct { background: rgba(76,175,80,0.3); border-color: #4CAF50; }
+        .story-option.wrong { background: rgba(244,67,54,0.2); border-color: #F44336; }
+
+        /* Exit Stats */
+        .exit-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin: 25px 0;
+            width: 100%;
+            max-width: 600px;
+        }
+
+        .exit-stat {
+            background: rgba(255,255,255,0.4);
+            padding: 15px;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        /* Message Box */
+        .message-box {
+            background: rgba(255,255,255,0.5);
+            padding: 20px 30px;
+            border-radius: 15px;
+            margin: 15px 0;
+            border-left: 4px solid var(--gold);
+            max-width: 500px;
+            width: 100%;
+        }
+
+        /* Loading */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,193,7,0.3);
+            border-radius: 50%;
+            border-top-color: var(--gold-dark);
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Character Selection */
+        .char-form {
+            background: rgba(255,255,255,0.5);
+            padding: 30px;
+            border-radius: 20px;
+            max-width: 400px;
+            width: 100%;
+        }
+
+        .char-form input, .char-form select {
+            width: 100%;
+            padding: 12px 15px;
+            margin: 10px 0;
+            border: 2px solid rgba(255,193,7,0.3);
+            border-radius: 10px;
+            font-size: 16px;
+            font-family: 'Quicksand', sans-serif;
+            background: rgba(255,255,255,0.7);
+        }
+
+        .char-list {
+            margin-top: 20px;
+            width: 100%;
+        }
+
+        .char-item {
+            padding: 15px;
+            background: rgba(255,255,255,0.5);
+            border: 2px solid rgba(255,193,7,0.3);
+            border-radius: 12px;
+            margin: 10px 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .char-item:hover {
+            background: rgba(255,193,7,0.2);
+            border-color: var(--gold);
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* AI Response styling */
+        .ai-response {
+            background: rgba(255,255,255,0.6);
+            padding: 20px;
+            border-radius: 15px;
+            margin: 15px 0;
+            border-left: 4px solid #7E57C2;
+            max-width: 500px;
+            width: 100%;
+            font-style: italic;
+            color: #4E342E;
+        }
+
+        .emotion-tag {
+            font-size: 12px;
+            color: #7E57C2;
+            margin-bottom: 8px;
+        }
+    </style>
+</head>
+
+        .divine-light.small {
+            width: 80px;
+            height: 80px;
+            box-shadow: 0 0 40px 15px rgba(255,193,7,0.5);
+        }
+
+        .divine-light.large {
+            width: 280px;
+            height: 280px;
+            box-shadow: 0 0 100px 40px rgba(255,193,7,0.5);
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.15); opacity: 1; }
+        }
+
+        /* Content */
+        .content {
+            z-index: 2;
+            text-align: center;
+            padding: 40px;
+            max-width: 800px;
+        }
+
+        .title {
+            font-size: 48px;
+            color: #5D4037;
+            margin-bottom: 20px;
+            font-weight: 300;
+        }
+
+        .subtitle {
+            font-size: 18px;
+            color: #8D6E63;
+            font-style: italic;
+            margin-bottom: 30px;
+        }
+
+        .message {
+            font-size: 28px;
+            color: #4E342E;
+            font-style: italic;
+            line-height: 1.6;
+            margin: 30px 0;
+        }
+
+        .message-box {
+            background: rgba(255,255,255,0.3);
+            padding: 30px 40px;
+            border-radius: 20px;
+            border: 2px solid rgba(255,193,7,0.3);
+            margin: 20px 0;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 16px 40px;
+            font-size: 16px;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 10px;
+        }
+
+        .btn-primary {
+            background: rgba(255,193,7,0.2);
+            color: #E65100;
+        }
+
+        .btn-primary:hover {
+            background: rgba(255,193,7,0.4);
+            transform: scale(1.05);
+        }
+
+        .btn-secondary {
+            background: rgba(139,69,19,0.1);
+            color: #5D4037;
+        }
+
+        .btn-green {
+            background: rgba(76,175,80,0.2);
+            color: #2E7D32;
+        }
+
+        .btn-blue {
+            background: rgba(33,150,243,0.2);
+            color: #1565C0;
+        }
+
+        /* Options grid */
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .option-btn {
+            padding: 20px;
+            background: rgba(255,255,255,0.5);
+            border: 2px solid rgba(255,193,7,0.3);
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .option-btn:hover {
+            background: rgba(255,193,7,0.2);
+            transform: translateY(-3px);
+        }
+
+        .option-icon {
+            font-size: 32px;
+        }
+
+        .option-label {
+            font-size: 14px;
+            color: #5D4037;
+            font-weight: 500;
+        }
+
+        /* Progress stats */
+        .stats {
+            display: flex;
+            gap: 30px;
+            margin-top: 30px;
+            padding: 15px;
+            background: rgba(255,255,255,0.4);
+            border-radius: 15px;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #5D4037;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #8D6E63;
+        }
+
+        /* Wisdom input */
+        .input-box {
+            width: 100%;
+            max-width: 400px;
+            padding: 15px 20px;
+            font-size: 16px;
+            border: 2px solid rgba(255,193,7,0.3);
+            border-radius: 10px;
+            background: rgba(255,255,255,0.5);
+            margin: 20px 0;
+        }
+
+        .input-box:focus {
+            outline: none;
+            border-color: rgba(255,193,7,0.6);
+        }
+
+        /* Karma choice */
+        .choice-buttons {
+            display: flex;
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .choice-btn {
+            padding: 20px 40px;
+            font-size: 18px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .choice-btn.positive {
+            background: rgba(76,175,80,0.2);
+            color: #2E7D32;
+        }
+
+        .choice-btn.neutral {
+            background: rgba(158,158,158,0.2);
+            color: #616161;
+        }
+
+        .choice-btn:hover {
+            transform: scale(1.05);
+        }
+
+        /* Meditation circle */
+        .breathing-circle {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(76,175,80,0.6) 0%, rgba(76,175,80,0.8) 100%);
+            box-shadow: 0 0 50px 20px rgba(76,175,80,0.4);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            animation: breathe 6s infinite ease-in-out;
+        }
+
+        @keyframes breathe {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.3); }
+        }
+
+        .timer {
+            font-size: 36px;
+            color: white;
+            font-weight: 300;
+        }
+
+        .timer-label {
+            font-size: 14px;
+            color: rgba(255,255,255,0.8);
+        }
+
+        /* Story */
+        .story-box {
+            background: rgba(255,255,255,0.4);
+            padding: 30px;
+            border-radius: 20px;
+            border: 2px solid rgba(33,150,243,0.3);
+            margin: 20px 0;
+            text-align: left;
+        }
+
+        .story-title {
+            font-size: 22px;
+            color: #1565C0;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .story-text {
+            font-size: 18px;
+            line-height: 1.8;
+            color: #4E342E;
+        }
+
+        .story-question {
+            font-size: 20px;
+            font-weight: 600;
+            color: #5D4037;
+            margin: 25px 0 15px;
+        }
+
+        .story-option {
+            padding: 15px 20px;
+            background: rgba(255,255,255,0.5);
+            border: 2px solid rgba(33,150,243,0.3);
+            border-radius: 12px;
+            margin: 10px 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .story-option:hover {
+            background: rgba(33,150,243,0.1);
+        }
+
+        .story-option.correct {
+            background: rgba(76,175,80,0.3);
+            border-color: #4CAF50;
+        }
+
+        .story-option.wrong {
+            background: rgba(244,67,54,0.2);
+            border-color: #F44336;
+        }
+
+        /* Exit stats */
+        .exit-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin: 25px 0;
+        }
+
+        .exit-stat {
+            background: rgba(255,255,255,0.4);
+            padding: 15px;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        /* Two column layout */
+        .two-column {
+            display: flex;
+            width: 100%;
+            height: 100%;
+        }
+
+        .column {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .divider {
+            width: 1px;
+            background: rgba(255,193,7,0.5);
+        }
+
+        /* Header */
+        .header {
+            position: absolute;
+            top: 20px;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            z-index: 10;
+        }
+
+        .header-title {
+            font-size: 20px;
+            color: #5D4037;
+            font-weight: 600;
+        }
+
+        .xp-badge {
+            padding: 8px 16px;
+            background: rgba(255,193,7,0.3);
+            border-radius: 15px;
+            font-size: 14px;
+            color: #E65100;
+            font-weight: 600;
+        }
+
+        /* Astra message */
+        .astra {
+            font-size: 14px;
+            color: #8D6E63;
+            margin-top: 10px;
+        }
+
+        /* Fade animations */
+        .fade-in {
+            animation: fadeIn 1s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade-in-delay {
+            animation: fadeIn 1s ease 0.5s forwards;
+            opacity: 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- Screen 0: Character Selection -->
+    <div id="screen-character" class="screen active">
+        <div class="content" style="background: linear-gradient(180deg, #EDE7F6 0%, #D1C4E9 50%, #B39DDB 100%);">
+            <div class="divine-light small"></div>
+            <div class="message">"Begin your journey, seeker."</div>
+            
+            <div class="char-form fade-in" style="background: rgba(255,255,255,0.6); padding: 25px; border-radius: 20px; max-width: 350px;">
+                <h3 style="text-align:center; margin-bottom:15px; color:#5D4037; font-family: Cinzel, serif;">Create Character</h3>
+                <input type="text" id="charName" placeholder="Your name..." style="width:100%; padding:12px; margin:8px 0; border:2px solid rgba(255,193,7,0.3); border-radius:10px; font-size:16px;" />
+                <select id="charClass" style="width:100%; padding:12px; margin:8px 0; border:2px solid rgba(255,193,7,0.3); border-radius:10px; font-size:16px; background:white;">
+                    <option value="">Select your path...</option>
+                    <option value="seeker">🧘 Seeker - Wisdom</option>
+                    <option value="warrior">⚔️ Warrior - Courage</option>
+                    <option value="healer">💚 Healer - Empathy</option>
+                </select>
+                <button class="btn btn-primary" style="width:100%; margin-top:10px;" onclick="createCharacter()">
+                    Begin Journey
+                </button>
+                <button class="btn btn-secondary" style="width:100%; margin-top:10px;" onclick="loadCharacters()">
+                    Load Existing
+                </button>
+            </div>
+            
+            <div id="charList" class="char-list" style="width:100%; max-width:350px;"></div>
+        </div>
+    </div>
+
+    <!-- Screen 1: Entry Gate -->
+    <div id="screen-entry" class="screen active">
+        <div class="particles" id="particles"></div>
+        <div class="divine-light"></div>
+        <div class="content fade-in">
+            <div class="title">🌟 God World</div>
+            <div class="subtitle">"Welcome, seeker. Walk slowly."</div>
+            <button class="btn btn-primary" onclick="goToScreen('screen-presence')">
+                Enter the Divine Realm
+            </button>
+        </div>
+    </div>
+
+    <!-- Screen 2: Divine Presence -->
+    <div id="screen-presence" class="screen">
+        <div class="content fade-in">
+            <div class="divine-light large"></div>
+            <div class="message-box fade-in-delay">
+                <div class="message">"I have always been with you."</div>
+                <div class="astra">Feel the divine presence.</div>
+            </div>
+            <button class="btn btn-primary fade-in-delay" style="margin-top: 30px;" onclick="goToScreen('screen-wisdom')">
+                Enter Wisdom Hall
+            </button>
+        </div>
+    </div>
+
+    <!-- Screen 3: Wisdom Hall -->
+    <div id="screen-wisdom" class="screen">
+        <div class="header">
+            <button class="btn btn-secondary" onclick="goToScreen('screen-exit')">Exit</button>
+            <div class="header-title">🧠 Wisdom Hall</div>
+            <div class="xp-badge">Wisdom: 0 | Calm: 0</div>
+        </div>
+        <div class="two-column">
+            <div class="column">
+                <div class="divine-light"></div>
+            </div>
+            <div class="divider"></div>
+            <div class="column" style="padding: 20px;">
+                <div class="message">"Ask, and you shall receive."</div>
+                <div class="astra">What wisdom do you seek?</div>
+                
+                <div class="options-grid">
+                    <div class="option-btn" onclick="showDialog('Ask Wisdom')">
+                        <div class="option-icon">🧠</div>
+                        <div class="option-label">Ask Wisdom</div>
+                    </div>
+                    <div class="option-btn" onclick="goToScreen('screen-karma')">
+                        <div class="option-icon">⚖️</div>
+                        <div class="option-label">Karma Choice</div>
+                    </div>
+                    <div class="option-btn" onclick="goToScreen('screen-meditation')">
+                        <div class="option-icon">🧘</div>
+                        <div class="option-label">Meditation</div>
+                    </div>
+                    <div class="option-btn" onclick="goToScreen('screen-story')">
+                        <div class="option-icon">📖</div>
+                        <div class="option-label">Divine Story</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Screen 4: Karma Choice -->
+    <div id="screen-karma" class="screen">
+        <div class="header">
+            <button class="btn btn-secondary" onclick="goToScreen('screen-wisdom')">← Back</button>
+            <div class="header-title">⚖️ Karma Choice</div>
+            <div class="xp-badge">+20 XP</div>
+        </div>
+        <div class="content">
+            <div class="divine-light" style="position: absolute; opacity: 0.1; transform: scale(0.5);"></div>
+            <div class="message">"Every choice shapes the path."</div>
+            <div class="message-box">
+                <p style="font-size: 18px; color: #5D4037; margin-bottom: 20px;">
+                    You see someone suffering. You are tired.
+                </p>
+                <div class="choice-buttons">
+                    <button class="choice-btn positive" onclick="showKarmaResult(true)">
+                        Help
+                    </button>
+                    <button class="choice-btn neutral" onclick="showKarmaResult(false)">
+                        Ignore
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Screen 5: Meditation -->
+    <div id="screen-meditation" class="screen">
+        <div class="header">
+            <button class="btn btn-secondary" onclick="goToScreen('screen-wisdom')">← Back</button>
+            <div class="header-title">🧘 Meditation</div>
+            <div class="xp-badge">+10 Calm</div>
+        </div>
+        <div class="content">
+            <div class="message">"Be still."</div>
+            
+            <div class="breathing-circle">
+                <div class="timer" id="timer">2:00</div>
+                <div class="timer-label">Breathe...</div>
+            </div>
+            
+            <div style="margin-top: 40px;">
+                <button class="btn btn-green" onclick="startMeditation()">
+                    Begin Meditation
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Screen 6: Divine Story -->
+    <div id="screen-story" class="screen">
+        <div class="header">
+            <button class="btn btn-secondary" onclick="goToScreen('screen-wisdom')">← Back</button>
+            <div class="header-title">📖 Divine Story</div>
+            <div class="xp-badge">+15 XP</div>
+        </div>
+        <div class="content" style="max-width: 700px;">
+            <div class="story-box">
+                <div class="story-title">🪔 The Lamp and Darkness</div>
+                <p class="story-text">
+                    A lamp complained about the darkness around it. "I am so tired of fighting this endless darkness," it said. The candle flame flickered and replied, "Friend, your task is not to fight darkness. Your task is simply to shine."
+                </p>
+                <div class="story-question">What is the lesson?</div>
+                
+                <div class="story-option" onclick="checkAnswer(this, false)">
+                    <span>⭕</span>
+                    <span>Darkness can be defeated</span>
+                </div>
+                <div class="story-option" onclick="checkAnswer(this, true)">
+                    <span>✅</span>
+                    <span>Light does not fight darkness, it simply shines</span>
+                </div>
+                <div class="story-option" onclick="checkAnswer(this, false)">
+                    <span>⭕</span>
+                    <span>We should avoid darkness</span>
+                </div>
+                <div class="story-option" onclick="checkAnswer(this, false)">
+                    <span>⭕</span>
+                    <span>Lamps are stronger than darkness</span>
+                </div>
+            </div>
+            
+            <div id="lesson-result" style="display: none;" class="message-box fade-in">
+                <div style="font-size: 14px; color: #8D6E63;">The Lesson:</div>
+                <div style="font-size: 20px; font-style: italic; color: #5D4037; margin-top: 10px;">
+                    "Light does not fight darkness. It simply illuminates."
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Screen 7: Exit -->
+    <div id="screen-exit" class="screen">
+        <div class="divine-light" style="position: absolute; opacity: 0.2; animation: none;"></div>
+        <div class="content fade-in">
+            <div class="divine-light small"></div>
+            <div class="message" style="font-size: 32px;">"Carry this peace with you."</div>
+            <div class="astra" style="font-size: 18px;">You may return anytime.</div>
+            
+            <div class="exit-stats">
+                <div class="exit-stat">
+                    <div class="stat-value" id="stat-wisdom">0</div>
+                    <div class="stat-label">Wisdom XP</div>
+                </div>
+                <div class="exit-stat">
+                    <div class="stat-value" id="stat-calm">0</div>
+                    <div class="stat-label">Calm</div>
+                </div>
+                <div class="exit-stat">
+                    <div class="stat-value" id="stat-stories">0</div>
+                    <div class="stat-label">Stories</div>
+                </div>
+                <div class="exit-stat">
+                    <div class="stat-value" id="stat-karma">0</div>
+                    <div class="stat-label">Karma</div>
+                </div>
+            </div>
+            
+            <button class="btn btn-primary" onclick="goToScreen('screen-entry')">
+                Return to World
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // API Configuration
+        const API_BASE = 'http://localhost:8000/api';
+        
+        // State
+        let currentCharacter = null;
+        let wisdomXP = 0;
+        let calmPoints = 0;
+        let storiesRead = 0;
+        let karmaChoices = 0;
+
+        // Character Management
+        async function createCharacter() {
+            const name = document.getElementById('charName').value.trim();
+            const charClass = document.getElementById('charClass').value;
+            
+            if (!name || !charClass) {
+                alert('Please enter your name and select a path.');
+                return;
+            }
+            
+            try {
+                const response = await fetch(`${API_BASE}/characters/`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 
+                        name, 
+                        char_class: charClass,
+                        wisdom: 5,
+                        courage: 5,
+                        empathy: 5
+                    })
+                });
+                
+                const data = await response.json();
+                if (data.error || (data.success === false)) {
+                    alert(data.error || data.message || 'Character already exists');
+                    return;
+                }
+                
+                // API returns {success: true, character: {...}}
+                currentCharacter = data.character;
+                localStorage.setItem('currentCharacter', name);
+                
+                // Hide character screen and show entry
+                goToScreen('screen-entry');
+                
+            } catch (error) {
+                console.error('Error creating character:', error);
+                alert('Could not connect to server. Starting offline mode.');
+                // Fallback to offline mode
+                currentCharacter = { name: name, char_class: charClass };
+                goToScreen('screen-entry');
+            }
+        }
+
+        async function loadCharacters() {
+            try {
+                const response = await fetch(`${API_BASE}/characters/`);
+                const data = await response.json();
+                
+                const charList = document.getElementById('charList');
+                charList.innerHTML = '';
+                
+                const chars = data.characters || [];
+                if (chars.length === 0) {
+                    charList.innerHTML = '<p style="text-align:center; color:#5D4037;">No characters found. Create one!</p>';
+                    return;
+                }
+                
+                chars.forEach(char => {
+                    const div = document.createElement('div');
+                    div.className = 'char-item';
+                    div.innerHTML = `
+                        <div>
+                            <strong>${char.name}</strong>
+                            <div style="font-size:12px; color:#8D6E63;">Level ${char.level} ${char.char_class}</div>
+                        </div>
+                        <button class="btn btn-secondary" style="padding:8px 16px; font-size:12px;">Select</button>
+                    `;
+                    div.onclick = () => selectCharacter(char.name);
+                    charList.appendChild(div);
+                });
+                
+            } catch (error) {
+                console.error('Error loading characters:', error);
+                document.getElementById('charList').innerHTML = '<p style="text-align:center; color:#5D4037;">Server unavailable</p>';
+            }
+        }
+
+        async function selectCharacter(name) {
+            try {
+                const response = await fetch(`${API_BASE}/characters/${name}`);
+                const data = await response.json();
+                
+                if (data.error) {
+                    alert(data.error);
+                    return;
+                }
+                
+                currentCharacter = data;
+                localStorage.setItem('currentCharacter', name);
+                goToScreen('screen-entry');
+                
+            } catch (error) {
+                console.error('Error selecting character:', error);
+                alert('Could not load character. Try again.');
+            }
+        }
+
+        // API Chat with AI
+        async function askAI(question) {
+            if (!currentCharacter) {
+                alert('Please create or select a character first.');
+                goToScreen('screen-character');
+                return null;
+            }
+            
+            try {
+                const response = await fetch(`${API_BASE}/chat`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        character_name: currentCharacter.name,
+                        message: question,
+                        world_id: 'god'
+                    })
+                });
+                
+                const data = await response.json();
+                
+                // Update character XP if returned
+                if (data.xp_gained) {
+                    wisdomXP += data.xp_gained;
+                    updateStats();
+                }
+                
+                return data;
+                
+            } catch (error) {
+                console.error('Error asking AI:', error);
+                // Fallback response
+                return { 
+                    response: getWisdomResponse(question),
+                    emotion: null,
+                    xp_gained: 5
+                };
+            }
+        }
+
+        // Initialize particles
+        function createParticles() {
+            const container = document.getElementById('particles');
+            if (!container) return;
+            
+            for (let i = 0; i < 20; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 5 + 's';
+                particle.style.animationDuration = (5 + Math.random() * 5) + 's';
+                container.appendChild(particle);
+            }
+        }
+
+        // Navigation
+        function goToScreen(screenId) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById(screenId).classList.add('active');
+            
+            if (screenId === 'screen-meditation') {
+                const timerEl = document.getElementById('timer');
+                if (timerEl) timerEl.textContent = '2:00';
+            }
+        }
+
+        // Dialogs with Real AI
+        async function showDialog(type) {
+            const questions = {
+                'Ask Wisdom': ['Why am I afraid?', 'What is the purpose?', 'How do I find peace?']
+            };
+            
+            const questionList = questions[type] || ['Ask your question...'];
+            const question = questionList[Math.floor(Math.random() * questionList.length)];
+            
+            // Show loading
+            const responseBox = document.createElement('div');
+            responseBox.className = 'message-box';
+            responseBox.innerHTML = `<div class="loading"></div> Asking the divine...`;
+            
+            // Get AI response
+            const aiResult = await askAI(question);
+            const response = aiResult ? aiResult.response : getWisdomResponse(question);
+            const emotion = aiResult ? aiResult.emotion : null;
+            const xp = aiResult ? (aiResult.xp_gained || 10) : 10;
+            
+            // Show response
+            const message = `${question}\n\n✨ God: "${response}"\n\n+${xp} Wisdom XP${emotion ? ' | Emotion: ' + emotion : ''}`;
+            alert(message);
+            wisdomXP += xp;
+            updateStats();
+        }
+
+        function getWisdomResponse(input) {
+            const responses = {
+                'fear': 'Fear is born from thought, not truth.',
+                'afraid': 'Fear is born from thought, not truth.',
+                'pain': 'Pain shapes wisdom.',
+                'purpose': 'Your purpose is to grow and love.',
+                'peace': 'Peace is within you.',
+                'love': 'Love is the essence of all.',
+            };
+            
+            const lower = input.toLowerCase();
+            for (let key in responses) {
+                if (lower.includes(key)) return responses[key];
+            }
+            return 'The answer lies within your heart.';
+        }
+
+        // Karma
+        function showKarmaResult(helped) {
+            const response = helped 
+                ? 'Kindness returns in unseen ways.'
+                : 'Every choice shapes the path.';
+            const lesson = helped ? 'Compassion enriches the soul.' : null;
+            
+            alert(`You chose to ${helped ? 'Help' : 'Ignore'}.\n\nGod: "${response}"\n\n${lesson ? 'Lesson: ' + lesson : ''}\n\n+20 XP`);
+            karmaChoices++;
+            if (helped) wisdomXP += 20;
+            updateStats();
+        }
+
+        // Meditation
+        function startMeditation() {
+            const circle = document.querySelector('.breathing-circle');
+            circle.style.animationPlayState = 'running';
+            
+            let time = 120;
+            const timerEl = document.getElementById('timer');
+            
+            const interval = setInterval(() => {
+                time--;
+                const mins = Math.floor(time / 60);
+                const secs = time % 60;
+                timerEl.textContent = `${mins}:${secs.toString().padStart(2, '0')}`;
+                
+                if (time <= 0) {
+                    clearInterval(interval);
+                    circle.style.animationPlayState = 'paused';
+                    timerEl.textContent = 'Done!';
+                    alert('"Peace is your nature."\n\n+10 Calm Points');
+                    calmPoints += 10;
+                    updateStats();
+                }
+            }, 1000);
+        }
+
+        // Story
+        function checkAnswer(element, isCorrect) {
+            const options = element.parentElement.querySelectorAll('.story-option');
+            options.forEach(opt => {
+                opt.style.pointerEvents = 'none';
+                if (opt === element) {
+                    opt.classList.add(isCorrect ? 'correct' : 'wrong');
+                }
+            });
+            
+            if (isCorrect) {
+                wisdomXP += 15;
+                storiesRead++;
+            }
+            
+            document.getElementById('lesson-result').style.display = 'block';
+            updateStats();
+        }
+
+        // Stats
+        function updateStats() {
+            document.querySelectorAll('.xp-badge').forEach(badge => {
+                badge.textContent = `Wisdom: ${wisdomXP} | Calm: ${calmPoints}`;
+            });
+            document.getElementById('stat-wisdom').textContent = wisdomXP;
+            document.getElementById('stat-calm').textContent = calmPoints;
+            document.getElementById('stat-stories').textContent = storiesRead;
+            document.getElementById('stat-karma').textContent = karmaChoices;
+        }
+
+        // Initialize
+        createParticles();
+    </script>
+</body>
+</html>

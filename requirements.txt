@@ -1,0 +1,17 @@
+# Original dependencies
+textblob
+nltk
+
+# Backend dependencies
+fastapi
+uvicorn[standard]
+httpx
+python-dotenv
+firebase-admin
+
+# Database
+sqlite3 (built-in)
+
+# AI/ML
+transformers
+torch
