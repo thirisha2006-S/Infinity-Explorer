@@ -1,4 +1,29 @@
 ---
+title: Infinity Explorer
+description: AI-Powered Virtual Exploration & Learning Platform
+---
+
+## 🚀 Quick Start
+
+```bash
+# Clone & Setup
+git clone https://github.com/thirisha2006-S/Infinity-Explorer.git
+cd Infinity-Explorer
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Run backend server
+python -m uvicorn src.backend.main:app --reload --port 8000
+```
+
+Open **http://localhost:8000** in your browser!
+
+### Demo Video
+
+Watch the God World demo: [Link to be added]
+
+---
 
 ## Project Name
 
