@@ -8,7 +8,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
-from routers import characters, chat, worlds, nasa, openstreetmap, achievements, notifications, daily_rewards, auth, wikipedia, nlp
+from routers import characters, chat, worlds, nasa, openstreetmap, achievements, notifications, daily_rewards, auth, wikipedia, nlp, analytics
 from database import init_db
 
 app = FastAPI(
@@ -41,6 +41,7 @@ app.include_router(daily_rewards.router, prefix="/api/daily", tags=["Daily Rewar
 app.include_router(auth.router, prefix="/api/auth", tags=["Authentication"])
 app.include_router(wikipedia.router, prefix="/api/wikipedia", tags=["Wikipedia"])
 app.include_router(nlp.router, prefix="/api/nlp", tags=["NLP"])
+app.include_router(analytics.router, prefix="/api/analytics", tags=["Analytics"])
 
 
 # Serve frontend static files - use absolute path from project root
