@@ -1,142 +1,152 @@
 ---
-title: Infinity Explorer
-description: AI-Powered Virtual Exploration & Learning Platform
+title: 🌌 Infinity Explorer
+description: AI-Powered Virtual World Exploration Platform
 ---
 
-## 🚀 Quick Start
+# 🌌 Infinity Explorer
+
+An AI-powered interactive exploration platform where users explore virtual worlds (Space, God, Spirit, Earth) with an intelligent AI companion named **Astra**.
+
+![Python](https://img.shields.io/badge/Python-3.10+-blue?logo=python)
+![FastAPI](https://img.shields.io/badge/FastAPI-0.100+-green?logo=fastapi)
+![Status](https://img.shields.io/badge/Status-Active-success)
+
+---
+
+## 🎯 Project Overview
+
+**Infinity Explorer** is an AI-based interactive exploration system that allows users to:
+- Explore multiple virtual worlds with AI guidance
+- Learn through story-based exploration
+- Interact with an emotionally-aware AI companion
+- Track progress with XP and character progression
+
+---
+
+## 🛠 Tech Stack
+
+| Layer | Technology |
+|-------|------------|
+| **Backend** | Python, FastAPI |
+| **Database** | SQLite |
+| **AI/NLP** | Transformers, Emotion Detection |
+| **Frontend** | HTML/CSS/JavaScript |
+| **Mobile** | Flutter (optional) |
+
+---
+
+## ✨ Features
+
+### Core Features
+- 🤖 **AI Companion "Astra"** - Conversational AI with personality
+- 😰 **Emotion Detection** - Responds to user emotions
+- 🎮 **Interactive Worlds** - Space, God, Spirit, Earth
+- 📊 **XP System** - Gain experience through exploration
+- 👤 **Character System** - Create and manage characters
+
+### God World (Current Focus)
+- 🌟 Divine entry experience
+- 🧠 Wisdom Hall with AI Q&A
+- ⚖️ Karma choice system
+- 🧘 Meditation with breathing timer
+- 📖 Interactive stories
+
+---
+
+## 🚀 How to Run
+
+### Prerequisites
+```bash
+Python 3.10+
+```
+
+### Installation
 
 ```bash
-# Clone & Setup
+# Clone repository
 git clone https://github.com/thirisha2006-S/Infinity-Explorer.git
 cd Infinity-Explorer
 
 # Install dependencies
 pip install -r requirements.txt
+```
 
-# Run backend server
+### Run Backend
+
+```bash
 python -m uvicorn src.backend.main:app --reload --port 8000
 ```
 
-Open **http://localhost:8000** in your browser!
+### Open in Browser
 
-### Demo Video
-
-Watch the God World demo: [Link to be added]
-
----
-
-## Project Name
-
-**Infinity Explorer – AI-Powered Virtual Exploration & Learning Platform**
+```
+http://localhost:8000
+```
 
 ---
 
-## What is Infinity Explorer?
+## 📸 Screenshots
 
-**Infinity Explorer** is an **AI-based interactive exploration system** that allows users to explore **multiple virtual worlds** with the help of a **human-like AI companion**.
-The project combines **Artificial Intelligence, education, emotional interaction, and adventure** into a single platform.
-
-Users don’t just read or watch content — they **interact, explore, decide, and learn**.
-
----
-
-## Main Uses of Infinity Explorer
-
-### 1. Educational Use 📚
-
-* Learn **science, space, history, culture, and psychology**
-* Learning happens through **story-based exploration**
-* Improves curiosity, understanding, and memory
-
-### 2. Emotional & Mental Engagement 🧠
-
-* AI companion talks like a friend
-* Detects user emotions (happy, sad, scared, curious)
-* Gives supportive, motivating, or informative responses
-
-### 3. Safe Exploration Experience 🌍
-
-* Explore dangerous or imaginary worlds safely
-* No real-world risk
-* Ideal for students and young learners
-
-### 4. Skill Development 🎯
-
-* Improves decision-making
-* Encourages critical thinking
-* Builds imagination and creativity
+| Screen | Description |
+|--------|-------------|
+| Character Select | Create or load character |
+| God World Entry | Divine golden entrance |
+| Wisdom Hall | Ask Astra questions |
+| Meditation | Breathing circle timer |
+| Exit Stats | View journey summary |
 
 ---
 
-## How Infinity Explorer Works on Different Devices
+## 🎥 Demo
 
-### 📱 Use on Mobile Phone
+Quick demo showing:
+1. Character creation
+2. Entering God World
+3. Asking Astra a question
+4. XP increase
+5. World transitions
 
-Infinity Explorer can be used on a **mobile phone** as:
-
-* A **mobile web app**
-* A future **Android/iOS application**
-
-**Phone features:**
-
-* Touch-based interaction
-* Chat with AI companion
-* Choose worlds and actions
-* Learn anytime, anywhere
-
-**Benefits on phone:**
-
-* Easy access
-* Portable learning
-* Good for short exploration sessions
+[Record your own - use OBS or Win+G on Windows]
 
 ---
 
-### 💻 Use on Laptop / Desktop
+## 📁 Project Structure
 
-Infinity Explorer works fully on **laptop or desktop** as:
-
-* A **web-based application**
-* A **Python-based interactive system**
-* A future **game-style interface**
-
-**Laptop features:**
-
-* Larger screen for detailed exploration
-* Better interaction for long sessions
-* Ideal for deep learning and project demonstrations
-
-**Benefits on laptop:**
-
-* Better visualization
-* Smooth AI processing
-* Suitable for presentations and development
+```
+Infinity-Explorer/
+├── src/
+│   ├── ai/           # AI companion & emotion detection
+│   ├── backend/      # FastAPI server & routers
+│   └── game/         # Game logic & world data
+├── frontend/         # HTML/CSS/JS web UI
+├── flutter/         # Flutter mobile app
+├── data/            # SQLite database
+└── main.py          # Console game entry
+```
 
 ---
 
-## Technology Used (Simple)
+## 🔜 Future Improvements
 
-* **Python** – core programming
-* **AI & NLP** – intelligent conversations
-* **Game logic** – world exploration flow
-* **Memory system** – user progress & history
-* **Web / App framework** – cross-device usage
-
----
-
-## Who Can Use Infinity Explorer?
-
-* Students
-* Learners
-* Curious users
-* Educational institutions
-* Future game and AI research platforms
+- [ ] Improve emotion detection accuracy
+- [ ] Add more AI personality traits
+- [ ] Polish UI animations
+- [ ] Add Space World full demo
+- [ ] Deploy to cloud (Render/Railway)
 
 ---
 
-## Summary (Short & Strong)
+## 📄 License
 
-**Infinity Explorer** is an AI-powered exploration platform that works on **both mobile phones and laptops**, allowing users to explore virtual worlds, learn interactively, and connect emotionally with an intelligent AI companion.
+MIT License
 
 ---
 
+## 👤 Author
+
+**thirisha2006-S**
+- GitHub: [@thirisha2006-S](https://github.com/thirisha2006-S)
+
+---
+
+*Star ⭐ this repo if you found it helpful!*

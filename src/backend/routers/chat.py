@@ -179,6 +179,13 @@ def _generate_response(user_message: str, emotion: str, world_id: str = None, ch
         ])
     
     if world_id == "god":
+        # God World specific responses - wisdom, purpose, peace
+        if "why" in lower_msg and ("life" in lower_msg or "exist" in lower_msg or "suffer" in lower_msg):
+            return ("Life's purpose is to experience, grow, and love. Suffering teaches us compassion. "
+                    "Every challenge is a teacher in disguise.")
+        if "meaning" in lower_msg or "purpose" in lower_msg:
+            return ("Your purpose is uniquely yours - to grow, to love, and to be your true self. "
+                    "The universe celebrates your existence.")
         if "wisdom" in lower_msg or "knowledge" in lower_msg:
             return ("True wisdom comes from understanding both the light and shadow within ourselves. "
                     "It is a journey, not a destination.")
@@ -188,10 +195,42 @@ def _generate_response(user_message: str, emotion: str, world_id: str = None, ch
         if "balance" in lower_msg:
             return ("Balance is the key to harmony. In the God Realm, we learn that "
                     "every action has an equal and opposite reaction.")
+        if "karma" in lower_msg:
+            return ("Karma is not punishment - it's the universe reflecting back what we put out. "
+                    "Kindness creates ripples that return to us.")
+        if "meditat" in lower_msg or "breath" in lower_msg:
+            return ("Meditation quiets the mind's chatter. In stillness, we hear our soul's whisper. "
+                    "Even a single breath can bring peace.")
+        if "soul" in lower_msg or "spirit" in lower_msg:
+            return ("Your soul is the eternal part of you - beyond body and mind. "
+                    "It carries your essence across many journeys.")
+        if "love" in lower_msg:
+            return ("Love is the highest vibration. It heals, transforms, and connects all things. "
+                    "In God Realm, we remember love is our true nature.")
+        if "fear" in lower_msg or "afraid" in lower_msg:
+            return ("Fear is a teacher, not an enemy. It shows us what we need to overcome. "
+                    "Courage is feeling fear and walking forward anyway.")
+        if "death" in lower_msg or "die" in lower_msg:
+            return ("Death is not the end, but a transformation. Like day becomes night, "
+                    "our essence continues in new forms.")
+        if "happy" in lower_msg or "joy" in lower_msg:
+            return ("Joy is your birthright. The divine celebrates your existence! "
+                    "Find joy in simple moments - a breath, a smile, a sunset.")
+        if "sad" in lower_msg or "unhappy" in lower_msg or "depress" in lower_msg:
+            return ("Even in darkness, light exists. Your feelings are valid. "
+                    "This too shall pass. Be gentle with yourself.")
+        if "angry" in lower_msg or "rage" in lower_msg:
+            return ("Anger is energy asking for transformation. "
+                    "Acknowledge it, then channel it into positive change.")
+        if "help" in lower_msg or "guide" in lower_msg:
+            return ("I am here to guide you. Ask about: wisdom, peace, balance, karma, "
+                    "meditation, love, or your life's purpose. What calls to you?")
         return random.choice([
             "✨ Divine wisdom flows through this realm. Seekers like you find peace and enlightenment here.",
             "The God Realm teaches balance, wisdom, and inner peace. What calls to your soul?",
             "Here, we explore the deeper meanings of existence. What wisdom do you seek?",
+            "🌟 In this sacred space, all questions lead inward. What would you like to explore?",
+            "The divine light illuminates your path. Ask, and you shall receive insight.",
         ])
     
     if world_id == "spirit":
