@@ -54,16 +54,13 @@ if frontend_path.exists():
 
 @app.get("/", include_in_schema=False)
 async def root():
-    frontend_index = frontend_path / "index.html"
+    frontend_index = frontend_path / "god_world_preview.html"
     if frontend_index.exists():
         return FileResponse(str(frontend_index))
     return {
         "message": "Welcome to Infinity Explorer API",
         "version": "1.0.0",
         "docs": "/docs",
-        "frontend": "/ (open for web demo)",
-        "frontend_path": str(frontend_index),
-        "path_exists": frontend_index.exists(),
     }
 
 
